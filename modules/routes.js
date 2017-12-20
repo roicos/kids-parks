@@ -14,6 +14,30 @@ module.exports = function (express, app, path, bcrypt) {
     		res.render("index");
     });
 
+    app.post("/search", function(req, res, next){
+    	var location = req.body.location.trim().toLowerCase();
+    	var result = location + "request ricieved";
+
+
+    	const yelp = require("yelp-fusion");
+        const apiKey = "oYLw4WA_Dd72EDyi2Apq8XpKmrW8XQvYDNbtuB7e12Ho53CXPXEBbf-vt9Skdw-bThn7zLQI4Z-unRYbFM1wO38ATpX-EM3Khq9wOGoeIHzRW_nRhB9zEAKJ0PU6WnYx";
+
+        const searchRequest = {
+          term: "Parks for Kids",
+          location: location
+        };
+
+        const client = yelp.client(apiKey);
+
+        client.search(searchRequest).then(response => {
+          const searchResult = response.jsonBody.businesses;
+          const jsonResult = JSON.stringify(searchResult, null, 4);
+          res.status(200).send(jsonResult);
+        }).catch(e => {
+          console.log(e);
+        });
+    });
+
 	app.get("/login", function (req, res, next) {
     	res.render("login", {"errorMessage" : ""});
    	});

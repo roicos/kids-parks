@@ -5,18 +5,31 @@
 <div class="row">
     <div class="col-sm-2"></div>
     <div class="col-sm-8">
-        <form id="search">
+        <form id="search" onsubmit="searchParks(this.children[0].children[0].value); return false" autocomplete="off">
             <div class="input-group">
                 <input class="form-control" type="text" name="location" placeholder="Where are you?"/>
                 <span class="input-group-btn">
-                    <input type="submit" class="btn" value="Search" />
+                    <input type="submit" class="btn" value="Search"/>
                 </span>
             </div>
         </form>
     </div>
     <div class="col-sm-2"></div>
 </div>
+<script>
+    function searchParks(location){
+         $.post("search",
+            { location: location },
+            function(data, status){
+                console.log("OK, \nStatus: " + status + ", Result: " + data);
 
+            })
+            .fail(function(error){
+                console.log("ERROR:  " + error);
+            });
+        return false;
+    }
+</script>
 
 
 
