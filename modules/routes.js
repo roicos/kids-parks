@@ -2,15 +2,15 @@ module.exports = function (express, app, path, bcrypt) {
 
 	app.use(express.static(path.join(__dirname, "../public")));
 
-	function checkAuth(req, res, next){
+	/*function checkAuth(req, res, next){
 		if (req.url === "/" && (!req.session || !req.session.authenticated)) {
 			res.redirect("/login");
 		} else {
 			next();
 		}
-	}
+	}*/
 
-	app.get("/", checkAuth, function (req, res, next) {
+	app.get("/", /*checkAuth,*/ function (req, res, next) {
     		res.render("index");
     });
 

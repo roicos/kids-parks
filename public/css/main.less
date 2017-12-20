@@ -1,3 +1,11 @@
+/*http://colorpalettes.net/color-palette-2869/*/
+
+@green : #7faf0c;
+@orange: #ff9d55;
+@shade: #D8C323;
+@light: #f6f3ca;
+@blue: #74bdb8;
+
 html, body {
 	margin:0;
 	padding:0;
@@ -5,22 +13,46 @@ html, body {
 }
 
 body{
-	background-color: yellow;
-	color: green;
 	font-size: 14px;
+	background: @green;
+	color:@light;
+	font-family: 'Delius', cursive;
+}
+
+a{
+	color: @shade;
+}
+
+a:hover, a:active {
+	color: @orange;
+}
+
+button:focus {outline:0;}
+.btn:focus,.btn:active:focus,.btn.active:focus,
+.btn.focus,.btn:active.focus,.btn.active.focus {
+    outline: none;
+}
+
+h1{
+	margin-bottom: 40px;
+	font-family: 'Delius', cursive;
+	font-size: 50px;
+}
+
+form .input-group-btn input.btn{
+	color: #fff;
+	background-color: @shade;
+	font-weight: bold;
 }
 
 #header{
-	/*border:1px solid red;*/
 	width: 100%;
 	line-height: 20px;
 	padding: 20px;
 }
 
 #main{
-	background-color: @blue;
 	min-height: ~"calc(100% - 120px)"; /* 100% - header - footer */
-	/*border: 1px solid green*/;
 }
 
 #content{
@@ -30,5 +62,4 @@ body{
     width: 100%;
     line-height: 20px;
     padding: 20px;
-   /* border: 1px solid red;*/
 }
