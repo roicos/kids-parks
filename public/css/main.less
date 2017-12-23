@@ -1,10 +1,8 @@
-/*http://colorpalettes.net/color-palette-2869/*/
-
 @green : #7faf0c;
-@orange: #ff9d55;
-@shade: #D8C323;
-@light: #f6f3ca;
-@blue: #74bdb8;
+@yellow: #ffe600;
+@lightGreen: #a5c754;
+@blue: #7654c7;
+@white: #fff;
 
 html, body {
 	margin:0;
@@ -15,19 +13,22 @@ html, body {
 body{
 	font-size: 14px;
 	background: @green;
-	color:@light;
+	color:@white;
 	font-family: 'Delius', cursive;
 }
 
 a{
-	color: @shade;
+	color: @yellow;
 }
 
 a:hover, a:active {
-	color: @orange;
+	color: @white;
 }
 
 button:focus {outline:0;}
+input:focus {outline: none;}
+.form-control:focus {border-color: transparent;}
+
 .btn:focus,.btn:active:focus,.btn.active:focus,
 .btn.focus,.btn:active.focus,.btn.active.focus {
     outline: none;
@@ -41,7 +42,7 @@ h1{
 
 form .input-group-btn input.btn{
 	color: #fff;
-	background-color: @shade;
+	background-color: @yellow;
 	font-weight: bold;
 }
 
@@ -62,4 +63,40 @@ form .input-group-btn input.btn{
     width: 100%;
     line-height: 20px;
     padding: 20px;
+}
+
+.park {
+	margin: 10px;
+	padding: 10px;
+	border-top: 1px solid rgba(255, 255, 255, 0.3);
+	box-shadow: 0 1px 2px rgba(0, 0, 0, 0.4);
+}
+
+.park a{
+	color: @white;
+}
+
+.park:hover{
+	background-color: @lightGreen;
+}
+
+.park:hover a{
+	color: @blue;
+}
+
+.park button {
+	background-color: transparent;
+	border: 1px solid @white;
+	margin-right: 20px;
+	margin-bottom: 5px;
+}
+
+.park button:hover{
+	/*box-shadow: inset 0 0 3px white;*/
+	background-color: @blue;
+	color: @white;
+}
+
+.park:hover button{
+	border-color: @blue;
 }

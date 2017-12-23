@@ -16,13 +16,41 @@
     </div>
     <div class="col-sm-2"></div>
 </div>
+<div id = "parks"></div>
+
+
 <script>
     function searchParks(location){
          $.post("search",
             { location: location },
             function(data, status){
                 console.log("OK, \nStatus: " + status + ", Result: " + data);
-
+                var parks = JSON.parse(data);
+                var html = "";
+                for(var i=0; i<parks.length; i++){
+                    var park = parks[i];
+                    if(i%2 === 0){ // odd
+                        html += "<div class=\"row\">";
+                    }
+                    var img_parts =  park.image_url.split("/");
+                    img_parts.pop();
+                    img_parts.push("ls.jpg");
+                    var image_url = img_parts.join("/");
+                    html += "<div class=\"col-sm-6\">"
+                            + "<div class=\"row park\"><a target=\"_blank\" href=\"" +park.url+ "\">"
+                            + "<div class=\"col-sm-4\">"
+                            +"<img class=\"img-rounded\" src=\"" +image_url+ "\" alt=\"" +park.name+ "\" height=\"120\" width=\"120\"/>"
+                            + "</div><div class=\"col-sm-8\">"
+                            + "<h4>" +park.name+ "</h4>"
+                            + "<button class=\"btn-xs\">going: 0</button>"
+                            + "<button class=\"btn-xs\">I am going</button>"
+                            + "<p>" +park.location.display_address+ "</p>"
+                            + "</div></a></div></div>";
+                    if(i%2 !== 0){ // even
+                        html += "</div>";
+                    }
+                }
+                $("#parks").html(html);
             })
             .fail(function(error){
                 console.log("ERROR:  " + error);
@@ -31,6 +59,5 @@
     }
 </script>
 
-
-
+<% include partial/auth %>
 <% include partial/footer %>
