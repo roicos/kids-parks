@@ -3,6 +3,7 @@
 @lightGreen: #a5c754;
 @blue: #7654c7;
 @white: #fff;
+@black: #000;
 
 html, body {
 	margin:0;
@@ -19,6 +20,7 @@ body{
 
 a{
 	color: @yellow;
+	cursor: pointer;
 }
 
 a:hover, a:active {
@@ -78,6 +80,7 @@ form .input-group-btn input.btn{
 
 .park:hover{
 	background-color: @lightGreen;
+	color: @blue;
 }
 
 .park:hover a{
@@ -99,4 +102,27 @@ form .input-group-btn input.btn{
 
 .park:hover button{
 	border-color: @blue;
+}
+
+.modal a:hover, a:active {
+    color: @green;
+}
+
+.modal .modal-header{
+	background-color: @green;
+}
+
+.modal .btn{
+	color: #fff;
+    background-color: @yellow;
+    font-weight: bold;
+}
+
+.modal .modal-header .close {
+    margin-top: -25px;
+    color: @white;
+}
+
+.modal .modal-body{
+	color: @black;
 }

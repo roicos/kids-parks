@@ -38,9 +38,40 @@ module.exports = function (express, app, path, bcrypt) {
         });
     });
 
-	app.get("/login", function (req, res, next) {
-    	res.render("login", {"errorMessage" : ""});
-   	});
+	app.post("/registration", function (req, res, next) {
+		dbClient.query("create table if not exists users(id serial primary key, username varchar(40) not null, password varchar(65) not null)", (err, result) => {
+			if (err){
+				console.log("Error create table: " + err);
+			} else {
+				var userName = req.body.username.trim();
+				if(userName !=""){
+					dbClient.query("select id from users where username = '" + userName + "'", (err, result) => {
+						if (err){
+							console.log("Error find user: " + err);
+							res.render("login", {"errorMessage" : "Error check if user exists."});
+						} else {
+							if(result.rows.length >0){
+								res.render("registration", {"status" : 0 , "message" : "This username is already exists!"});
+							} else { // ok
+								bcrypt.hash(req.body.password, 10, function(err, passHash) {
+									dbClient.query("insert into users (username, password) values ('"+ userName + "', '"+ passHash + "')", (err, result) => {
+										if (err){
+											console.log("Error insert user: " + err);
+										} else {
+											res.render("registration", {"status" : 1, "message" : "Thank you for registration!"});
+										}
+									});
+								});
+							}
+						}
+					});
+				} else {
+					res.render("registration", {"status" : 0 , "message" : "Username should not be empty!"});
+				}
+			}
+		});
+	});
+
 
    	app.post("/login", function (req, res, next) {
 
