@@ -1,21 +1,21 @@
-<form id="login">
+<form id="auth">
     <div class="form-group">
-        <label for="login">Login</label>
-        <input type="text" class="form-control" id="login">
+        <label for="loginAuth">Login</label>
+        <input type="text" class="form-control" id="loginAuth">
     </div>
     <div class="form-group">
         <label for="password">Password</label>
         <input type="password" class="form-control" id="password">
     </div>
     <p><a id="newUser" href="#">I'm new user</a></p>
-    <p id="loginError">Incorrect login/password.</p>
+    <p id="loginError"></p>
 </form>
 
 
 <form id="register">
     <div class="form-group">
-        <label for="login">Login</label>
-        <input type="text" class="form-control" id="login">
+        <label for="loginReg">Login</label>
+        <input type="text" class="form-control" id="loginReg">
     </div>
     <div class="form-group">
         <label for="password1">Password</label>
@@ -37,16 +37,37 @@
         <label for="children">Your children (name and age)</label>
         <input type="text" class="form-control" id="children">
     </div>
+    <p id="registerError"></p>
 </form>
 
 <script>
     $("#register").hide();
     $("#loginError").hide();
+    $("#registerError").hide();
 
     $("#newUser").click(function(){
         $("#register").show(600);
-        $("#login").hide(600);
+        $("#auth").hide(600);
         $("#action").html("Register");
         step = "register";
     });
+
+    function registerUser(d){
+        $.post("register",
+            {"login" : $("#loginReg").val(),
+             "password1" : $("#password1").val(),
+             "password2" : $("#password2").val(),
+             "firstName" : $("#firstName").val(),
+             "lastName" : $("#lastName").val(),
+             "children" : $("#children").val(),
+             },
+            function(data, status){
+                console.log(data);
+                d.resolve();
+            })
+       .fail(function(error){
+           d.reject();
+           $("#registerError").html("Error register user: " + error);
+       });
+    }
 </script>

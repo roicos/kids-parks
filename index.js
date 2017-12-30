@@ -23,15 +23,15 @@ app.use(session(
 
 // db
 const pg = require("pg");
-var client = new pg.Client({
-    user: "user",
-    password: "secretPassword",
-    database: "myDB",
+var dbClient = new pg.Client({
+    user: "vzrcfqqpsztovu",
+    password: "d1edc2d9e882f376c46337c2b3ee22fe44cb3fabda3fbd4a41c506e572e5917f",
+    database: "d19ug0m6o9avg3",
     port: 5432,
-    host: "myHost",
-    ssl: false
+    host: "ec2-184-72-228-128.compute-1.amazonaws.com",
+    ssl: true
 });
-db = client.connect();
+dbClient.connect();
 
 // post request parser, sould be before routing
 const bodyParser = require("body-parser");
@@ -41,7 +41,7 @@ app.use(bodyParser.urlencoded({
 
 // routing
 const modulesDir = "./modules"
-require(modulesDir + "/routes")(express, app, path, bcrypt);
+require(modulesDir + "/routes")(express, app, path, bcrypt, dbClient);
 
 
 // OTHER MODULES

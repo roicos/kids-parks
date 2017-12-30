@@ -21,10 +21,19 @@
 
 <script>
     var step = "login";
-
     $("#rsvpForm").hide();
 
     $("#action").click(function(){
-        console.log(step);
+        if(step == "register"){
+            var d = $.Deferred();
+            registerUser(d);
+
+            $.when(d).done(function () {
+                step = "rsvp";
+                $("#authForm").hide();
+                $("#rsvpForm").show();
+                $("#action").html("RSVP");
+            });
+        }
     });
 </script>
