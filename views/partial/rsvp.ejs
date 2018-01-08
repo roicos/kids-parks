@@ -1,10 +1,29 @@
 <form id="rsvp">
     <div class="form-group">
-        <label for="Day">What day are you going to the park?</label>
-        <input type="text" class="form-control" id="day">
+        <label for="Date">What day are you going to the park?</label>
+        <input type="text" class="form-control" id="date">
     </div>
     <div class="form-group">
         <label for="Time">What time are you going to the park?</label>
         <input type="text" class="form-control" id="time">
     </div>
 </form>
+
+<script>
+    function rsvp(d, user, park){ // userId, parkId
+        $.post("rsvp",
+            {"user" : user,
+             "park" : park,
+             "date" : $("#date").val(),
+             "time" : $("#time").val(),
+             },
+            function(data, status){
+                console.log(data);
+                d.resolve();
+            })
+       .fail(function(error){
+           d.reject();
+           $("#registerError").html("Error RSVP: " + error);
+       });
+    }
+</script>

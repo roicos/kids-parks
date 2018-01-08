@@ -52,6 +52,21 @@
         step = "register";
     });
 
+    function loginUser(d){
+        $.post("login",
+            {"login" : $("#loginAuth").val(),
+             "password" : $("#password").val(),
+             },
+            function(data, status){
+                console.log(data);
+                d.resolve();
+            })
+       .fail(function(error){
+           d.reject();
+           $("#registerError").html("Error login user: " + error);
+       });
+    }
+
     function registerUser(d){
         $.post("register",
             {"login" : $("#loginReg").val(),
@@ -62,7 +77,7 @@
              "children" : $("#children").val(),
              },
             function(data, status){
-                console.log(data);
+                // console.log(data);
                 d.resolve();
             })
        .fail(function(error){

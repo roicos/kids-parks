@@ -10,6 +10,7 @@
             <div class="modal-body">
                 <div id="authForm"><% include auth %></div>
                 <div id="rsvpForm"><% include rsvp %></div>
+                <p id="thanks">Thank you for RSVP.</p>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn" data-dismiss="modal">Close</button>
@@ -22,9 +23,24 @@
 <script>
     var step = "login";
     $("#rsvpForm").hide();
+    $("#thanks").hide();
+
+    function reset(){ // TODO
+
+    }
 
     $("#action").click(function(){
-        if(step == "register"){
+        if(step == "login"){
+            var d = $.Deferred();
+            loginUser(d);
+
+            $.when(d).done(function () {
+                step = "rsvp";
+                $("#authForm").hide();
+                $("#rsvpForm").show();
+                $("#action").html("RSVP");
+            });
+        } else if(step == "register"){
             var d = $.Deferred();
             registerUser(d);
 
@@ -33,6 +49,15 @@
                 $("#authForm").hide();
                 $("#rsvpForm").show();
                 $("#action").html("RSVP");
+            });
+        } else if(step == "rsvp"){
+            var d = $.Deferred();
+            rsvp(d, user, park);
+
+             $.when(d).done(function () {
+                $("#thanks").show();
+                $('#rsvpModal').modal('hide');
+                reset();
             });
         }
     });

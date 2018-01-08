@@ -93,24 +93,31 @@ module.exports = function (express, app, path, bcrypt, dbClient) {
 
 
    	app.post("/login", function (req, res, next) {
-
-   		var userName = "User";
-   		var hash = "passwordHashByBcrypr";
-
    		var login = req.body.login ? req.body.login : "";
    		var password = req.body.password ? req.body.password : "";
 
-		if(login === userName){
-			bcrypt.compare(password, hash, function(err, result) {
-				if(result) {
-					req.session.authenticated = true;
-					res.redirect("/");
+   		if(login !=""){
+			dbClient.query("select * from users where login = '" + login + "'", (err, result) => {
+				if (err){
+					res.status(500).send({"error" : "Error to find user in DB."});
+				} else if(result.rows.length == 1) {
+				console.log(444);
+					var user = result.rows[0];
+					bcrypt.compare(password, user.password, function(errBcrypt, resultBcrypt) {
+						if(resultBcrypt) {
+							req.session.user = user.id;
+							req.session.authenticated = true;
+							res.status(200).send({"message" : "user authorised: " + user.id});
+						} else {
+							res.status(500).send({"error" : "Password is incorrenct."});
+						}
+					});
 				} else {
-					res.render("login", {"errorMessage" : "Password is incorrect."});
+					res.status(500).send({"error" : "Error to find one user."});
 				}
 			});
 		} else {
-			res.render("login", {"errorMessage" : "Login is incorrect."});
+			res.status(500).send({"error" : "Login should not be empty."});
 		}
     });
 
@@ -125,6 +132,54 @@ module.exports = function (express, app, path, bcrypt, dbClient) {
 			});
 		}
     });
+
+    app.post("/rsvp", function (req, res, next) { // TODO: change for Parks table
+
+    		dbClient.query("create table if not exists users(id serial primary key, login varchar(40) not null, password varchar(65) not null, name varchar(255), children varchar(255))", (err, result) => {
+
+    			if (err){
+    				console.log("Error create table: " + err);
+    				res.status(500).send({"error" : "Error create table: " + err});
+    			} else {
+    				var login = req.body.login.trim();
+    				var password1 = req.body.password1.trim();
+    				var password2 = req.body.password2.trim();
+    				var name = req.body.firstName.trim() + " " + req.body.lastName.trim();
+    				var children = req.body.children.trim();
+
+    				if(login !=""){
+    					dbClient.query("select id from users where login = '" + login + "'", (errSelect, resultSelect) => {
+    						if (errSelect){
+    							console.log("Error find user: " + errSelect);
+    							res.render("login", {"errorMessage" : "Error check if user exists."});
+    						} else {
+    							if(resultSelect.rows.length > 0){
+    								res.status(500).send({"error" : "This login is already exists."});
+    							} else {
+    								if(password1 == password2){ // ok
+    									bcrypt.hash(password1, 10, function(err, passHash) {
+                                        	dbClient.query("insert into users (login, password, name, children) values ('"+ login + "', '"+ passHash + "', '"+ name + "', '"+ children +"') returning *", (errInsert, resultInsert) => {
+    											if (errInsert){
+    												console.log("Error insert user: " + errInsert);
+    											} else {
+    												req.session.user = resultInsert.rows[0]["id"];
+    												req.session.authenticated = true;
+    												res.status(200).send({"message" : "user registered: " + resultInsert.rows[0].id});
+    											}
+    										});
+    									});
+    								} else {
+    									res.status(500).send({"error" : "Passwords are not the same."});
+    								}
+    							}
+    						}
+    					});
+    				} else {
+    					res.status(500).send({"error" : "Login should not be empty."});
+    				}
+    			}
+    		});
+    	});
 
    	app.get("*", function(req, res){
    		res.status(404).send("Can not find the page");
