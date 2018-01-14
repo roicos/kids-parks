@@ -2,7 +2,7 @@
     <input type="hidden" name="parkId" id="parkId" value=""/>
     <div class="form-group">
         <label for="Date">What day are you going to the park?</label>
-        <input type="text" class="form-control" id="date">
+        <input type="text" class="form-control" id="date" data-provide="datepicker" data-date-format="yyyy-mm-dd">
     </div>
     <div class="form-group">
         <label for="Time">What time are you going to the park?</label>
@@ -11,6 +11,9 @@
 </form>
 
 <script>
+
+$('#time').timepicker({ 'timeFormat': 'H:i:s' });
+
     function rsvp(d, userId){ // userId, parkId
         var user = "<%=locals.user%>" == ""? userId : "<%=locals.user%>";
         $.post("rsvp",
