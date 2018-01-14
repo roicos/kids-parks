@@ -58,8 +58,8 @@
              "password" : $("#password").val(),
              },
             function(data, status){
-                console.log(data);
-                d.resolve();
+                // console.log(data);
+                d.resolve(data.locals.user);
             })
        .fail(function(error){
            d.reject();
@@ -78,7 +78,7 @@
              },
             function(data, status){
                 // console.log(data);
-                d.resolve();
+                d.resolve(data.locals.user);
             })
        .fail(function(error){
            d.reject();

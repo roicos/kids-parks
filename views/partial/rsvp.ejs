@@ -1,4 +1,5 @@
 <form id="rsvp">
+    <input type="hidden" name="parkId" id="parkId" value=""/>
     <div class="form-group">
         <label for="Date">What day are you going to the park?</label>
         <input type="text" class="form-control" id="date">
@@ -10,15 +11,16 @@
 </form>
 
 <script>
-    function rsvp(d, user, park){ // userId, parkId
+    function rsvp(d, userId){ // userId, parkId
+        var user = "<%=locals.user%>" == ""? userId : "<%=locals.user%>";
         $.post("rsvp",
             {"user" : user,
-             "park" : park,
+             "park" : $("#parkId").val(),
              "date" : $("#date").val(),
              "time" : $("#time").val(),
              },
             function(data, status){
-                console.log(data);
+                //console.log(data);
                 d.resolve();
             })
        .fail(function(error){

@@ -24,7 +24,7 @@
          $.post("search",
             { location: location },
             function(data, status){
-                // console.log("OK, \nStatus: " + status + ", Result: " + data);
+                //console.log("OK, \nStatus: " + status + ", Result: " + data);
                 var parks = JSON.parse(data);
                 var html = "";
                 for(var i=0; i<parks.length; i++){
@@ -44,7 +44,7 @@
                             + "</a></div><div class=\"col-sm-8 col-xs-6\">"
                             + "<h4><a target=\"_blank\" href=\"" +park.url+ "\">" +park.name+ "</a></h4>"
                             + "<button class=\"btn-xs\" data-toggle=\"modal\" data-target=\"#rsvpModal\">going: 0</button>"
-                            + "<button class=\"btn-xs\" data-toggle=\"modal\" data-target=\"#rsvpModal\">I am going</button>"
+                            + "<button class=\"btn-xs rsvp\" data-id=\"" +park.id+ "\" data-toggle=\"modal\" data-target=\"#rsvpModal\">I am going</button>"
                             + "<p>" +park.location.display_address+ "</p>"
                             + "</div></div></div>";
                     if(i%2 !== 0){ // even
@@ -52,6 +52,12 @@
                     }
                 }
                 $("#parks").html(html);
+
+
+                $(".rsvp").click(function () {
+                     var parkId = $(this).data('id');
+                     $("#parkId").val(parkId);
+                });
             })
             .fail(function(error){
                 console.log("ERROR:  " + error);
