@@ -35,12 +35,41 @@ module.exports = function (express, app, path, bcrypt, dbClient) {
         const client = yelp.client(apiKey);
 
         client.search(searchRequest).then(response => {
-          const searchResult = response.jsonBody.businesses;
-          const jsonResult = JSON.stringify(searchResult, null, 4);
-          res.status(200).send(jsonResult);
-        }).catch(e => {
-          console.log(e);
-        });
+			var searchResult = response.jsonBody.businesses;
+			//console.log(searchResult);
+
+			var parkIds = [];
+			var finalResult = {};
+
+			for(var i=0; i<searchResult.length; i++){
+				parkIds.push("'" + searchResult[i].id + "'");
+				finalResult[searchResult[i].id] = {
+					"id" : searchResult[i].id,
+					"url" : searchResult[i].url,
+					"name" : searchResult[i].name,
+					"image_url" : searchResult[i].image_url,
+					"address" : searchResult[i].location.display_address,
+					"count" : 0
+					};
+			}
+			var query = "select count(*), parkid from meetings where parkid in (" + parkIds.join(", ") + ") and date >= now() - interval '1 day' and date <= now() + interval '7 day' group by parkid";
+
+			dbClient.query(query, (err, result) => {
+					if (err){
+						console.log("Error count meetings: " + err);
+					} else {
+						for(var j=0; j<result.rows.length; j++){
+							finalResult[result.rows[j].parkid].count = result.rows[j].count;
+						}
+
+						const jsonResult = JSON.stringify(finalResult, null, 4);
+						//console.log(jsonResult);
+                       	res.status(200).send(jsonResult);
+					}
+			});
+		}).catch(e => {
+		  console.log(e);
+		});
     });
 
 	app.post("/register", function (req, res, next) {
