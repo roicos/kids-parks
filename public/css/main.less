@@ -142,6 +142,10 @@ li.ui-timepicker-selected, .ui-timepicker-list li:hover, .ui-timepicker-list .ui
 	background-color: @lightGreen;
 }
 
+.datepicker table{
+	border-collapse: seperate;
+}
+
 .datepicker table tr td.day, .datepicker table tr td span.month, .datepicker table tr td span.year{
 	color: @green;
 }
@@ -152,4 +156,17 @@ li.ui-timepicker-selected, .ui-timepicker-list li:hover, .ui-timepicker-list .ui
 
 .datepicker table tr td.day:hover, .datepicker table tr td.day.focused, .datepicker table tr td span.month:hover, .datepicker table tr td span.month.focused, .datepicker table tr td span.year:hover, .datepicker table tr td span.year.focused{
 	background-color: @yellow;
+}
+
+.datepicker table tr td.today, .datepicker table tr td.today:hover, .datepicker table tr td.today.disabled, .datepicker table tr td.today.disabled:hover{
+	background-color: @green;
+	color: @white;
+	background-image: none;
+	border-radius: 4px;
+}
+
+.datepicker table tr td.today:hover:hover{
+	color: @white;
+	background-color: @yellow;
+	background-image: none;
 }

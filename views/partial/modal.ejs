@@ -34,6 +34,7 @@
         $("#auth input").val("");
         $("#register input").val("");
         $("#rsvp input").val("");
+        $(".datepicker table tr td.active.active").removeClass("active");
     }
 
     $('.modal').on('hidden.bs.modal', function(){
@@ -67,8 +68,17 @@
             var d = $.Deferred();
             rsvp(d, user);
 
-            $.when(d).done(function () {
-                $("#thanks").hide();
+            $.when(d).done(function (date) {
+                var rsvpDate = new Date(date);
+                var inAWeek = new Date();
+                inAWeek.setDate(inAWeek.getDate() + 7);
+
+                if(rsvpDate <= inAWeek){
+                    var countSelector = "#"+$("#parkId").val()+" .count";
+                    var newVal =  parseInt($(countSelector).text().split(": ")[1]) + 1;
+                    $(countSelector).text("going: " + newVal);
+                }
+
                 $('#rsvpModal').modal('hide');
                 reset();
             });

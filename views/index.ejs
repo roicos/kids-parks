@@ -1,6 +1,6 @@
 <% include partial/header %>
 <div class="row">
-    <div class="col-sm text-center"><h1>Find the place to play outside.</h1></div>
+    <div class="col-sm text-center"><h1>Find the place to play outside this week.</h1></div>
 </div>
 <div class="row">
     <div class="col-sm-2"></div>
@@ -24,7 +24,7 @@
          $.post("search",
             { location: location },
             function(data, status){
-                console.log("OK, \nStatus: " + status + ", Result: " + data);
+                // console.log("OK, \nStatus: " + status + ", Result: " + data);
                 var parks = JSON.parse(data);
                 var html = "";
                 var i = 0;
